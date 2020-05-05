@@ -1,2 +1,2 @@
 # squidly-designs
-PWP project
+PWP project for personal business
