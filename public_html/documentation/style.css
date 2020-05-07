@@ -30,3 +30,11 @@ img[src*="desktop"] {
     margin-right: auto;
     width: 60%;
 }
+
+.row {
+    display: flex;
+}
+
+img[src*="wireframe"] {
+    width: 50%;
+}
