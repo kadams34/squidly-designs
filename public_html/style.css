@@ -52,7 +52,7 @@ Navbar styling
  */
 
 .bg-customGray {
-    background-color: #282828;
+    background-color: rgb(41, 41, 41);
 }
 
 nav {
@@ -63,6 +63,22 @@ nav {
 Banner Styling
  */
 
-.bg-purple {
+.bg-customPurple {
     background-color: rgb(185, 151, 198);
+}
+
+/*
+About Me Styling
+ */
+
+.bg-customTeal {
+    background-color: rgb(118, 204, 209);
+}
+
+h1 {
+    font-family: "Roboto Slab";
+}
+
+p {
+    font-family: "Open Sans";
 }
