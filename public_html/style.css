@@ -48,15 +48,35 @@ Google Fonts
 }
 
 /*
+Global Text Styling
+ */
+
+h1 {
+    font-family: "Roboto Slab";
+    font-weight: bold;
+}
+
+h3 {
+    font-family: "Roboto Slab";
+    font-weight: bold;
+}
+
+p {
+    font-family: "Open Sans";
+    font-size: 1.25rem;
+}
+
+nav {
+    font-family: "Open Sans";
+    font-weight: bold;
+}
+
+/*
 Navbar styling
  */
 
 .bg-customGray {
     background-color: rgb(41, 41, 41);
-}
-
-nav {
-    font-family: "Open Sans";
 }
 
 /*
@@ -75,10 +95,3 @@ About Me Styling
     background-color: rgb(118, 204, 209);
 }
 
-h1 {
-    font-family: "Roboto Slab";
-}
-
-p {
-    font-family: "Open Sans";
-}
