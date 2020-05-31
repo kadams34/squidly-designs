@@ -79,12 +79,35 @@ Navbar styling
     background-color: rgb(41, 41, 41);
 }
 
+.bg-customWhite {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+nav.navbar {
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.navbar-dark .navbar-nav>li>a,
+.navbar-dark .navbar-nav>li>a:visited,
+.navbar-dark .navbar-nav>li>a:hover,
+.navbar-dark .navbar-nav>li>a:active {
+    color: rgb(255, 255, 255) !important;
+}
+
 /*
 Banner Styling
  */
 
 .bg-customPurple {
     background-color: rgb(185, 151, 198);
+}
+
+.mt-custom-4 {
+    margin-top: 4.4rem;
 }
 
 /*
@@ -101,4 +124,60 @@ Footer Styling
 
 .bg-customPink {
     background-color: rgb(250, 204, 215);
+}
+
+/*
+Portfolio Styling
+ */
+
+.overlay-1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    height: 100%;
+    width: 90%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: rgb(250, 204, 215);
+}
+
+.overlay-2 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    height: 100%;
+    width: 90%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: rgb(185, 151, 198);
+}
+
+.col-lg-3:hover .overlay-1 {
+    opacity: .9;
+}
+
+.col-lg-3:hover .overlay-2 {
+    opacity: .9;
+}
+
+.text {
+    color: black;
+    font-family: "Open Sans";
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+img[src*="jpeg"] {
+    border: 13px solid #ffffff;
 }
