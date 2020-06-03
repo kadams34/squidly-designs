@@ -28,6 +28,15 @@ indexRoute.route('/apis')
   })
   .post(requestValidation, (request, response) => {
 
+    const {email, upload, name, message} = request.body
+
+    const mailgunData = {
+      to: process.env.MAIL_RECIPIENT,
+      from: `Mailgun Sandbox <postmaster@${domain}>`,
+      subject: `${name} - ${email}`,
+      text: message
+    }
+
     const errors = validationResult(request)
 
     if(!errors.isEmpty()) {
