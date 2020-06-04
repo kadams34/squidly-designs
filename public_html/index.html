@@ -224,7 +224,7 @@
                 <div class="contact col-md-6">
 
                     <!-- BEGIN CONTACT FORM -->
-                    <form action="http://localhost:4200/apis" id="contact" method="post" novalidate>
+                    <form action="./apis/" id="contact" method="post" novalidate>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <div class="input-group">
@@ -262,6 +262,7 @@
                                           placeholder="Your Message (2000 characters max)" required rows="5"></textarea>
                             </div>
                         </div>
+                        <div class="g-recaptcha" data-sitekey="6LfeLgAVAAAAAJk_KcMd0wBE2iesmiI1UKxlFSyl"></div>
                         <div class="row">
                             <div class="col text-center">
                                 <button class="btn btn-info" type="submit">Submit</button>
@@ -354,6 +355,8 @@
                 integrity="sha256-0Yg/eibVdKyxkuVo1Qwh0DspoUCHvSbm/oOoYVz32BQ="
                 src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
 
+        <!-- Google reCAPTCHA -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
         <script src="js/script.js"></script>
 
 

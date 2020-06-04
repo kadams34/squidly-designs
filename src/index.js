@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const mailgun = require('mailgun-js')
 const bodyParser = require('body-parser')
 const {check, validationResult} = require('express-validator')
+const Recaptcha = require('express-recaptcha').RecaptchaV2
 
 //initializing the express app
 const app = express()
@@ -12,10 +13,10 @@ const app = express()
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-
-console.log(process.env)
-
+const recaptcha = new Recaptcha(process.env.RECAPTCHA_SITE_KEY, process.env.RECAPTCHA_SECRET_KEY)
 const indexRoute = express.Router()
+
+
 
 const requestValidation = [
     check('email', 'A valid Email is required').isEmail().normalizeEmail(),
@@ -28,14 +29,23 @@ indexRoute.route('/apis')
   .get((request, response) => {
     return response.json('Hello')
   })
-  .post(requestValidation, (request, response) => {
+  .post(recaptcha.middleware.verify, requestValidation, (request, response) => {
+
     response.append('Content-Type', 'text/html')
 
-    //this line below must be commented out before pwp has been hosted using docker
-    response.append('Access-Control-Allow-Origin', ['*'])
-    const domain = process.env.MAILGUN_DOMAIN
-    const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: domain});
+   if (request.recaptcha.error) {
+     return response.send(`<div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> There was an error with Recaptcha</div>`)
+   }
 
+   const errors = validationResult(request)
+
+   if (!errors.isEmpty()) {
+     const currentError = errors.array()[0]
+     return response.send(Buffer.from(`<div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> ${currentError.msg}</div>`))
+   }
+
+    const domain = process.env.MAILGUN_DOMAIN
+    const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: domain})
     const {email, upload, name, message} = request.body
 
     const mailgunData = {
@@ -51,15 +61,6 @@ indexRoute.route('/apis')
       }
     })
 
-    const errors = validationResult(request)
-
-    if(!errors.isEmpty()) {
-      const currentError = errors.array()[0]
-      return response.json(`bad request: ${currentError.msg}`)
-    }
-
-
-    console.log(request.body)
     return response.send(Buffer.from(`<div class="alert alert-success" role="alert">Email successfully sent.</div>`))
   })
 
