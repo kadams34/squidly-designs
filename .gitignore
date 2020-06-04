@@ -1,4 +1,4 @@
 /.idea
 .DS_Store
 /src/node_modules
-/src/mailgun.env
+/src/.env

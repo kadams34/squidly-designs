@@ -13,6 +13,8 @@ app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
+console.log(process.env)
+
 const indexRoute = express.Router()
 
 const requestValidation = [
@@ -28,6 +30,11 @@ indexRoute.route('/apis')
   })
   .post(requestValidation, (request, response) => {
 
+    //this line below must be commented out before pwp has been hosted using docker
+    response.append('Access-Control-Allow-Origin', ['*'])
+    const domain = process.env.MAILGUN_DOMAIN
+    const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: domain});
+
     const {email, upload, name, message} = request.body
 
     const mailgunData = {
@@ -37,6 +44,12 @@ indexRoute.route('/apis')
       text: message
     }
 
+    mg.messages().send(mailgunData, (error) => {
+      if (error) {
+        return response.json('error sending email through email handler please try again later')
+      }
+    })
+
     const errors = validationResult(request)
 
     if(!errors.isEmpty()) {
@@ -44,8 +57,7 @@ indexRoute.route('/apis')
       return response.json(`bad request: ${currentError.msg}`)
     }
 
-    //this line below must be commented out before pwp has been hosted using docker
-    response.append('Access-Control-Allow-Origin', ['*'])
+
     console.log(request.body)
     return response.json('is this thing on?')
   })
