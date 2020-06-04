@@ -29,6 +29,7 @@ indexRoute.route('/apis')
     return response.json('Hello')
   })
   .post(requestValidation, (request, response) => {
+    response.append('Content-Type', 'text/html')
 
     //this line below must be commented out before pwp has been hosted using docker
     response.append('Access-Control-Allow-Origin', ['*'])
@@ -46,7 +47,7 @@ indexRoute.route('/apis')
 
     mg.messages().send(mailgunData, (error) => {
       if (error) {
-        return response.json('error sending email through email handler please try again later')
+        return response.send(Buffer.from(`<div class="alert alert-danger" role="alert"><strong>Oh snap!</strong>Unable to send email error with email sender</div>`))
       }
     })
 
@@ -59,7 +60,7 @@ indexRoute.route('/apis')
 
 
     console.log(request.body)
-    return response.json('is this thing on?')
+    return response.send(Buffer.from(`<div class="alert alert-success" role="alert">Email successfully sent.</div>`))
   })
 
 app.use(indexRoute)
