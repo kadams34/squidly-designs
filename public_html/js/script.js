@@ -120,3 +120,12 @@ $(document).ready(function () {
   })
 
 })
+
+//Footer Copyright Year
+
+function getCurrentYear() {
+  let year = new Date().getFullYear()
+  document.getElementById('copyright').innerHTML = `© Squidly Designs ${year}`
+}
+
+getCurrentYear()
