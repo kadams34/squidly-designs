@@ -181,3 +181,15 @@ Portfolio Styling
 img[src*="jpeg"] {
     border: 13px solid #ffffff;
 }
+
+/*
+reCAPTCHA styling
+ */
+
+.g-recaptcha {
+    display: inline-block;
+}
+
+.text-center {
+    text-align: center;
+}

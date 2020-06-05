@@ -38,6 +38,18 @@ $(document).ready(function () {
     });
   }
 
+  /*
+  Page Scroll on Click Animation
+   */
+
+  $('.nav-link').click(function(link) {
+    link.preventDefault()
+    const section = $(this).attr('href')
+    $('html, body').animate({
+      scrollTop: $(section).offset().top
+    })
+  })
+
 
   /**
    * jQuery Validate Function
