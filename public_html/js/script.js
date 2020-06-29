@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     messages: {
       name: {
-        required: "Name is required field"
+        required: "Name is a required field"
       },
       email: {
         required: "Email is a required field",
