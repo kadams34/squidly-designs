@@ -5,7 +5,19 @@ const mailgun = require('mailgun-js')
 const bodyParser = require('body-parser')
 const {check, validationResult} = require('express-validator')
 const Recaptcha = require('express-recaptcha').RecaptchaV2
+const multer = require('multer')
+const storage = multer.memoryStorage()
 
+
+const limits  = {fields: 4, files: 1, parts: 10 }
+const fileFilter = ( request, file, callback) => {
+  const {originalname} = file
+  return originalname.match(/\.(jpg|jpeg|png|gif)$/)
+    ? callback(null, true)
+    : callback(new Error("only images are allowed to be uploaded"), false)
+}
+
+const uploader = multer({storage, limits, fileFilter}).single('upload')
 //initializing the express app
 const app = express()
 
@@ -21,7 +33,6 @@ const indexRoute = express.Router()
 const requestValidation = [
     check('email', 'A valid Email is required').isEmail().normalizeEmail(),
     check('name', 'A name is required to send an email').not().isEmpty().trim().escape(),
-    check('upload').optional().trim().escape(),
     check('message','A message is required to send an email').not().isEmpty().trim().escape().isLength({max:2000})
   ]
 
@@ -29,10 +40,11 @@ indexRoute.route('/apis')
   .get((request, response) => {
     return response.json('Hello')
   })
-  .post(recaptcha.middleware.verify, requestValidation, (request, response) => {
+  .post(uploader, recaptcha.middleware.verify, requestValidation, (request, response) => {
 
     response.append('Content-Type', 'text/html')
-
+    //Todo add this line when ready to test multer
+    console.log(request.file)
    if (request.recaptcha.error) {
      return response.send(`<div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> There was an error with Recaptcha</div>`)
    }
@@ -46,14 +58,20 @@ indexRoute.route('/apis')
 
     const domain = process.env.MAILGUN_DOMAIN
     const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: domain})
-    const {email, upload, name, message} = request.body
+    const {email, name, message} = request.body
+
+    //const filepath = path.join(__dirname, 'mailgun_logo.png')
+
+    const attachment = new mg.Attachment({data: request.file.buffer, filename: `${email}-attachment`, contentType: request.file.mimetype, knownLength: request.file.size})
 
     const mailgunData = {
       to: process.env.MAIL_RECIPIENT,
       from: `Mailgun Sandbox <postmaster@${domain}>`,
       subject: `${name} - ${email}`,
-      text: message
+      text: message,
+      attachment: attachment
     }
+    console.log(mailgunData)
 
     mg.messages().send(mailgunData, (error) => {
       if (error) {
