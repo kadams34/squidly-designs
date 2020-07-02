@@ -60,9 +60,11 @@ indexRoute.route('/apis')
     const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: domain})
     const {email, name, message} = request.body
 
-    //const filepath = path.join(__dirname, 'mailgun_logo.png')
+    let attachment = undefined
 
-    const attachment = new mg.Attachment({data: request.file.buffer, filename: `${email}-attachment`, contentType: request.file.mimetype, knownLength: request.file.size})
+    if (request.file) {
+      attachment = new mg.Attachment({data: request.file.buffer, filename: `${email}-attachment`, contentType: request.file.mimetype, knownLength: request.file.size})
+    }
 
     const mailgunData = {
       to: process.env.MAIL_RECIPIENT,
